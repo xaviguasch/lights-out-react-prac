@@ -29,8 +29,19 @@ import './Board.css'
  **/
 
 class Board extends Component {
+  static defaultProps = {
+    nrows: 5,
+    ncols: 5,
+    chanceLightStartsOn: 0.25
+  }
+
   constructor(props) {
     super(props)
+
+    this.state = {
+      hasWon: false,
+      board: this.createBoard()
+    }
 
     // TODO: set initial state
   }
@@ -77,6 +88,14 @@ class Board extends Component {
     return (
       <div>
         <h1>Board Component</h1>
+        <table className='Board'>
+          <tbody>
+            <tr>
+              <Cell isLit={true} />
+              <Cell isLit={false} />
+            </tr>
+          </tbody>
+        </table>
       </div>
     )
   }
