@@ -34,16 +34,14 @@ class Board extends Component {
     ncols: 5,
     chanceLightStartsOn: 0.25
   }
-
   constructor(props) {
     super(props)
 
+    // TODO: set initial state
     this.state = {
       hasWon: false,
       board: this.createBoard()
     }
-
-    // TODO: set initial state
   }
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
@@ -58,7 +56,6 @@ class Board extends Component {
       }
       board.push(row)
     }
-
     return board
   }
 
@@ -76,31 +73,28 @@ class Board extends Component {
         board[y][x] = !board[y][x]
       }
     }
-
-    flipCell(y, x)
-    flipCell(y, x - 1)
-    flipCell(y, x + 1)
-    flipCell(y - 1, x)
-    flipCell(y + 1, x)
-
     // TODO: flip this cell and the cells around it
+    flipCell(y, x) //Flip initial cell
+    flipCell(y, x - 1) //flip left
+    flipCell(y, x + 1) //flip right
+    flipCell(y - 1, x) //flip below
+    flipCell(y + 1, x) //flip above
 
     // win when every cell is turned off
     // TODO: determine is the game has been won
+    let hasWon = board.every(row => row.every(cell => !cell))
 
-    let hasWon = false
-    this.setState({ board, hasWon })
+    this.setState({ board: board, hasWon: hasWon })
   }
 
   /** Render game board or winning message. */
 
   render() {
-    // if the game is won, just show a winning msg & render nothing else
-    // TODO
-    // make table board
-    // TODO
-    let tblBoard = []
+    if (this.state.hasWon) {
+      return <h1>You won!</h1>
+    }
 
+    let tblBoard = []
     for (let y = 0; y < this.props.nrows; y++) {
       let row = []
       for (let x = 0; x < this.props.ncols; x++) {
@@ -117,9 +111,15 @@ class Board extends Component {
     }
 
     return (
-      <table className='Board'>
-        <tbody>{tblBoard}</tbody>
-      </table>
+      <div>
+        <div className='Board-title'>
+          <div className='neon-orange'>Lights</div>
+          <div className='neon-blue'>Out</div>
+        </div>
+        <table className='Board'>
+          <tbody>{tblBoard}</tbody>
+        </table>
+      </div>
     )
   }
 }
